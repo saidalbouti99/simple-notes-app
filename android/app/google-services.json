@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "9915192828",
+    "project_id": "todolistapp-said-ramadhan",
+    "storage_bucket": "todolistapp-said-ramadhan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9915192828:android:c43d198653306927104e79",
+        "android_client_info": {
+          "package_name": "com.example.todo_list_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9915192828-geohb213klh80tckrf417pdeqrc1rk6s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE4xGlJ5yAjiuRTMoTkZX-ut6bzOsh8mE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9915192828-geohb213klh80tckrf417pdeqrc1rk6s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

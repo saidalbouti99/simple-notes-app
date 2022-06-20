@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'cloud_note.dart';
+import 'cloud_task.dart';
 import 'firestore_storage.dart';
 import 'task_list_view.dart';
 import 'extensions.dart';
@@ -9,14 +9,14 @@ extension Count<T extends Iterable> on Stream<T> {
   Stream<int> get getLength => map((event) => event.length);
 }
 
-class NotesView extends StatefulWidget {
-  const NotesView({Key? key}) : super(key: key);
+class TaskView extends StatefulWidget {
+  const TaskView({Key? key}) : super(key: key);
 
   @override
-  _NotesViewState createState() => _NotesViewState();
+  _TaskViewState createState() => _TaskViewState();
 }
 
-class _NotesViewState extends State<NotesView> {
+class _TaskViewState extends State<TaskView> {
   late final FirebaseStorage _notesService;
 
 
@@ -50,17 +50,14 @@ class _NotesViewState extends State<NotesView> {
             case ConnectionState.waiting:
             case ConnectionState.active:
               if (snapshot.hasData) {
-                final allNotes = snapshot.data as Iterable<CloudNote>;
-                return NotesListView(
-                  notes: allNotes,
+                final allNotes = snapshot.data as Iterable<CloudTask>;
+                return TaskListView(
+                  list: allNotes,
                   onDeleteNote: (note) async {
                     await _notesService.deleteNote(documentId: note.documentId);
                   },
                   onTap: (note) {
-                    // Navigator.of(context).pushNamed(
-                    //   createOrUpdateNoteRoute,
-                    //                     //   arguments: note,
-                    //                     // );
+                    Navigator.of(context).pushNamed('/updateTask', arguments: note);
                   },
                 );
               } else {

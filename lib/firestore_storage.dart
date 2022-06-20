@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'cloud_note.dart';
+import 'cloud_task.dart';
 
 class FirebaseStorage {
-  final notes = FirebaseFirestore.instance.collection('todolist');
+  final task = FirebaseFirestore.instance.collection('todolist');
 
   Future<void> deleteNote({required String documentId}) async {
     try {
-      await notes.doc(documentId).delete();
+      await task.doc(documentId).delete();
     } catch (e) {
       throw CouldNotDeleteNoteException();
     }
@@ -17,25 +17,25 @@ class FirebaseStorage {
     required String text,
   }) async {
     try {
-      await notes.doc(documentId).update({textFieldName: text});
+      await task.doc(documentId).update({textFieldName: text});
     } catch (e) {
       throw CouldNotUpdateNoteException();
     }
   }
 
-  Stream<Iterable<CloudNote>> allNotes() {
-    final allNotes = notes
+  Stream<Iterable<CloudTask>> allNotes() {
+    final allNotes = task
         .snapshots()
-        .map((event) => event.docs.map((doc) => CloudNote.fromSnapshot(doc)));
+        .map((event) => event.docs.map((doc) => CloudTask.fromSnapshot(doc)));
     return allNotes;
   }
 
-  Future<CloudNote> createNewNote() async {
-    final document = await notes.add({
+  Future<CloudTask> createNewNote() async {
+    final document = await task.add({
       textFieldName: '',
     });
     final fetchedNote = await document.get();
-    return CloudNote(
+    return CloudTask(
       documentId: fetchedNote.id,
       list: '',
     );

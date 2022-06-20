@@ -9,9 +9,7 @@ class CreateTask extends StatefulWidget {
   State<CreateTask> createState() => _CreateTaskState();
 }
 
-const snackBar = SnackBar(
-  content: Text('Yay! A SnackBar!'),
-);
+
 class _CreateTaskState extends State<CreateTask> {
 
   final _task = TextEditingController();
@@ -22,18 +20,6 @@ class _CreateTaskState extends State<CreateTask> {
   Widget build(BuildContext context) {
     CollectionReference todolist = FirebaseFirestore.instance.collection('todolist');
 
-    void showSnackbar(){
-      final snackBar = SnackBar(
-        content: const Text('Yay! A SnackBar!'),
-        action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {
-            // Some code to undo the change.
-          },
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
     @override
     void dispose() {
       _task.dispose();
@@ -72,20 +58,6 @@ class _CreateTaskState extends State<CreateTask> {
                   border: OutlineInputBorder(),
                   labelText: 'Task',
                   contentPadding: EdgeInsets.all(8.0),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: _description,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  prefixIcon: Icon(
-                    Icons.info,
-                  ),
-                  contentPadding: EdgeInsets.all(8.0),
-                  border: OutlineInputBorder(),
                 ),
               ),
             ),

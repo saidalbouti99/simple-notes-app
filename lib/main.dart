@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'task_view.dart';
-import 'create_update_notes.dart';
+import 'create_update_task.dart';
 import 'add_new_task.dart';
 
 void main() async{
@@ -19,10 +19,12 @@ void main() async{
         foregroundColor: Colors.black,
       ),
     ),
-    home: const NotesView(),
+    // home: const TaskView(),
     initialRoute: '/',
     routes: {
+      '/': (context) => const TaskView(),
       '/addTask': (context) => const CreateTask(),
+      '/updateTask': (context) => const CreateUpdateTaskView(),
     },
   ));
 }

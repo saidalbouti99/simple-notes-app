@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
-import 'cloud_note.dart';
+import 'cloud_task.dart';
 import 'firestore_storage.dart';
 // import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart' show BuildContext, ModalRoute;
 
 
-class CreateUpdateNoteView extends StatefulWidget {
-  const CreateUpdateNoteView({Key? key}) : super(key: key);
+class CreateUpdateTaskView extends StatefulWidget {
+  const CreateUpdateTaskView({Key? key}) : super(key: key);
 
   @override
-  _CreateUpdateNoteViewState createState() => _CreateUpdateNoteViewState();
+  _CreateUpdateTaskViewState createState() => _CreateUpdateTaskViewState();
 }
 
-class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
-  CloudNote? _note;
-  late final FirebaseStorage _notesService;
+class _CreateUpdateTaskViewState extends State<CreateUpdateTaskView> {
+  CloudTask? _task;
+  late final FirebaseStorage _taskService;
   late final TextEditingController _textController;
 
   @override
   void initState() {
-    _notesService = FirebaseStorage();
+    _taskService = FirebaseStorage();
     _textController = TextEditingController();
     super.initState();
   }
 
 
   void _textControllerListener() async {
-    final note = _note;
-    if (note == null) {
+    final task = _task;
+    if (task == null) {
       return;
     }
     final text = _textController.text;
-    await _notesService.updateNote(
-      documentId: note.documentId,
+    await _taskService.updateNote(
+      documentId: task.documentId,
       text: text,
     );
   }
@@ -42,37 +42,37 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
     _textController.addListener(_textControllerListener);
   }
 
-  Future<CloudNote> createOrGetExistingNote(BuildContext context) async {
-    final widgetNote = context.getArgument<CloudNote>();
+  Future<CloudTask> createOrGetExistingNote(BuildContext context) async {
+    final widgetTask = context.getArgument<CloudTask>();
 
-    if (widgetNote != null) {
-      _note = widgetNote;
-      _textController.text = widgetNote.list;
-      return widgetNote;
+    if (widgetTask != null) {
+      _task = widgetTask;
+      _textController.text = widgetTask.list;
+      return widgetTask;
     }
 
-    final existingNote = _note;
+    final existingNote = _task;
     if (existingNote != null) {
       return existingNote;
     }
 
-    final newNote = await _notesService.createNewNote();
-    _note = newNote;
+    final newNote = await _taskService.createNewNote();
+    _task = newNote;
     return newNote;
   }
 
   void _deleteNoteIfTextIsEmpty() {
-    final note = _note;
+    final note = _task;
     if (_textController.text.isEmpty && note != null) {
-      _notesService.deleteNote(documentId: note.documentId);
+      _taskService.deleteNote(documentId: note.documentId);
     }
   }
 
   void _saveNoteIfTextNotEmpty() async {
-    final note = _note;
+    final note = _task;
     final text = _textController.text;
     if (note != null && text.isNotEmpty) {
-      await _notesService.updateNote(
+      await _taskService.updateNote(
         documentId: note.documentId,
         text: text,
       );
@@ -91,20 +91,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Task'),
-        actions: [
-          // IconButton(
-          //   onPressed: () async {
-          //     final text = _textController.text;
-          //     if (_note == null || text.isEmpty) {
-          //       await showCannotShareEmptyNoteDialog(context);
-          //     } else {
-          //       Share.share(text);
-          //     }
-          //   },
-          //   icon: const Icon(Icons.share),
-          // ),
-        ],
+        title: Text('Edit Task'),
       ),
       body: FutureBuilder(
         future: createOrGetExistingNote(context),
@@ -112,12 +99,20 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               _setupTextControllerListener();
-              return TextField(
-                controller: _textController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  hintText: 'Add your task',
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _textController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.task,
+                    ),
+                    border: OutlineInputBorder(),
+                    labelText: 'Task',
+                    contentPadding: EdgeInsets.all(8.0),
+                  ),
                 ),
               );
             default:

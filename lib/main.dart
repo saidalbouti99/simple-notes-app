@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
-import 'home.dart';
-import 'test.dart';
+import 'task_view.dart';
+import 'create_update_notes.dart';
+import 'add_new_task.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,9 +19,10 @@ void main() async{
         foregroundColor: Colors.black,
       ),
     ),
-    home: GetUserName('iE6CNSbZduHOZAKMCAhI'),
+    home: const NotesView(),
+    initialRoute: '/',
     routes: {
-      
+      '/addTask': (context) => const CreateTask(),
     },
   ));
 }

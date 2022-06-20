@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'cloud_note.dart';
-import 'constants.dart';
-import 'exceptions.dart';
 
 class FirebaseStorage {
   final notes = FirebaseFirestore.instance.collection('todolist');
+
   Future<void> deleteNote({required String documentId}) async {
     try {
       await notes.doc(documentId).delete();
@@ -48,3 +47,11 @@ class FirebaseStorage {
   FirebaseStorage._sharedInstance();
   factory FirebaseStorage() => _shared;
 }
+
+class CouldNotUpdateNoteException extends CloudStorageException {}
+class CouldNotDeleteNoteException extends CloudStorageException{
+}
+class CloudStorageException implements Exception {
+  const CloudStorageException();
+}
+const textFieldName='list';

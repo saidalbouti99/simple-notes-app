@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'constants.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -15,3 +14,5 @@ class CloudNote {
       : documentId = snapshot.id,
         list = snapshot.data()[textFieldName] as String;
 }
+
+const textFieldName='list';

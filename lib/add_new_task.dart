@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CreateTask extends StatefulWidget {
@@ -13,7 +12,6 @@ class CreateTask extends StatefulWidget {
 class _CreateTaskState extends State<CreateTask> {
 
   final _task = TextEditingController();
-  final _description=TextEditingController();
 
   String text='';
   @override
@@ -23,7 +21,6 @@ class _CreateTaskState extends State<CreateTask> {
     @override
     void dispose() {
       _task.dispose();
-      _description.dispose();
       super.dispose();
     }
     Future<void> addTask() {
@@ -32,7 +29,8 @@ class _CreateTaskState extends State<CreateTask> {
         'list': _task.text,
       })
           .then(
-              (_) => Navigator.of(context).popAndPushNamed('/'),
+              // (_) => Navigator.of(context).popAndPushNamed('/'),
+            (_) => Navigator.pushNamedAndRemoveUntil(context,'/',(_) => false),
       )
           .catchError((error) => print("Failed to add task: $error"));
     }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'cloud_task.dart';
 import 'firestore_storage.dart';
-// import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart' show BuildContext, ModalRoute;
 
 
@@ -31,7 +30,7 @@ class _CreateUpdateTaskViewState extends State<CreateUpdateTaskView> {
       return;
     }
     final text = _textController.text;
-    await _taskService.updateNote(
+    await _taskService.updateTask(
       documentId: task.documentId,
       text: text,
     );
@@ -42,7 +41,7 @@ class _CreateUpdateTaskViewState extends State<CreateUpdateTaskView> {
     _textController.addListener(_textControllerListener);
   }
 
-  Future<CloudTask> createOrGetExistingNote(BuildContext context) async {
+  Future<CloudTask> createOrGetExistingTask(BuildContext context) async {
     final widgetTask = context.getArgument<CloudTask>();
 
     if (widgetTask != null) {
@@ -51,29 +50,29 @@ class _CreateUpdateTaskViewState extends State<CreateUpdateTaskView> {
       return widgetTask;
     }
 
-    final existingNote = _task;
-    if (existingNote != null) {
-      return existingNote;
+    final existingTask = _task;
+    if (existingTask != null) {
+      return existingTask;
     }
 
-    final newNote = await _taskService.createNewNote();
-    _task = newNote;
-    return newNote;
+    final newTask = await _taskService.createNewTask();
+    _task = newTask;
+    return newTask;
   }
 
-  void _deleteNoteIfTextIsEmpty() {
-    final note = _task;
-    if (_textController.text.isEmpty && note != null) {
-      _taskService.deleteNote(documentId: note.documentId);
+  void _deleteTaskIfTextIsEmpty() {
+    final task = _task;
+    if (_textController.text.isEmpty && task != null) {
+      _taskService.deleteTask(documentId: task.documentId);
     }
   }
 
-  void _saveNoteIfTextNotEmpty() async {
-    final note = _task;
+  void _saveTaskIfTextNotEmpty() async {
+    final task = _task;
     final text = _textController.text;
-    if (note != null && text.isNotEmpty) {
-      await _taskService.updateNote(
-        documentId: note.documentId,
+    if (task != null && text.isNotEmpty) {
+      await _taskService.updateTask(
+        documentId: task.documentId,
         text: text,
       );
     }
@@ -81,8 +80,8 @@ class _CreateUpdateTaskViewState extends State<CreateUpdateTaskView> {
 
   @override
   void dispose() {
-    _deleteNoteIfTextIsEmpty();
-    _saveNoteIfTextNotEmpty();
+    _deleteTaskIfTextIsEmpty();
+    _saveTaskIfTextNotEmpty();
     _textController.dispose();
     super.dispose();
   }
@@ -94,7 +93,7 @@ class _CreateUpdateTaskViewState extends State<CreateUpdateTaskView> {
         title: Text('Edit Task'),
       ),
       body: FutureBuilder(
-        future: createOrGetExistingNote(context),
+        future: createOrGetExistingTask(context),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:

@@ -4,39 +4,39 @@ import 'cloud_task.dart';
 class FirebaseStorage {
   final task = FirebaseFirestore.instance.collection('todolist');
 
-  Future<void> deleteNote({required String documentId}) async {
+  Future<void> deleteTask({required String documentId}) async {
     try {
       await task.doc(documentId).delete();
     } catch (e) {
-      throw CouldNotDeleteNoteException();
+      throw CouldNotDeleteTaskException();
     }
   }
 
-  Future<void> updateNote({
+  Future<void> updateTask({
     required String documentId,
     required String text,
   }) async {
     try {
       await task.doc(documentId).update({textFieldName: text});
     } catch (e) {
-      throw CouldNotUpdateNoteException();
+      throw CouldNotUpdateTaskException();
     }
   }
 
-  Stream<Iterable<CloudTask>> allNotes() {
-    final allNotes = task
+  Stream<Iterable<CloudTask>> allTasks() {
+    final allTask = task
         .snapshots()
         .map((event) => event.docs.map((doc) => CloudTask.fromSnapshot(doc)));
-    return allNotes;
+    return allTask;
   }
 
-  Future<CloudTask> createNewNote() async {
+  Future<CloudTask> createNewTask() async {
     final document = await task.add({
       textFieldName: '',
     });
-    final fetchedNote = await document.get();
+    final fetchedTask = await document.get();
     return CloudTask(
-      documentId: fetchedNote.id,
+      documentId: fetchedTask.id,
       list: '',
     );
   }
@@ -48,8 +48,8 @@ class FirebaseStorage {
   factory FirebaseStorage() => _shared;
 }
 
-class CouldNotUpdateNoteException extends CloudStorageException {}
-class CouldNotDeleteNoteException extends CloudStorageException{
+class CouldNotUpdateTaskException extends CloudStorageException {}
+class CouldNotDeleteTaskException extends CloudStorageException{
 }
 class CloudStorageException implements Exception {
   const CloudStorageException();

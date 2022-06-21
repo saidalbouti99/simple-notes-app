@@ -5,13 +5,13 @@ typedef TaskCallback = void Function(CloudTask task);
 
 class TaskListView extends StatelessWidget {
   final Iterable<CloudTask> list;
-  final TaskCallback onDeleteNote;
+  final TaskCallback onDeleteTask;
   final TaskCallback onTap;
 
   const TaskListView({
     Key? key,
     required this.list,
-    required this.onDeleteNote,
+    required this.onDeleteTask,
     required this.onTap,
   }) : super(key: key);
 
@@ -33,7 +33,7 @@ class TaskListView extends StatelessWidget {
           ),
           trailing: IconButton(
             onPressed: () async {
-              onDeleteNote(task);
+              onDeleteTask(task);
             },
             icon: const Icon(Icons.delete),
           ),
